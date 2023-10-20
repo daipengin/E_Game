@@ -22,9 +22,15 @@ public class player_move : MonoBehaviour
     [SerializeField]
     Game_Manager manager;
 
+    [SerializeField]
+    float Wide;
+
     float timer;
 
     GameObject holdingobj;
+
+    Vector3 startpos;
+    Vector3 currentpos;
 
     // Start is called before the first frame update
     void Start()
@@ -46,20 +52,42 @@ public class player_move : MonoBehaviour
             Doropping();
             timer = 0;
         }
+        if (Time.timeScale != 0)
+        {
+            TapMove();
+        }
+        
 
     }
+
+    void TapMove()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            startpos = Input.mousePosition;
+        }
+        if (Input.GetMouseButton(0))
+        {
+            currentpos = Input.mousePosition;
+            float diffx = (currentpos.x - startpos.x) / Screen.width*Wide*speed;
+            float newX = Mathf.Clamp(transform.localPosition.x + diffx, -x_limit, x_limit);
+            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+            startpos = currentpos;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            Doropping();
+        }
+    }
+
+
 
     void Movinig(float x)
     {
         Vector3 pos = transform.position;
         pos += new Vector3(x*speed*Time.deltaTime, 0, 0);
-        if(pos.x >  x_limit)
-        {
-            pos.x = x_limit;
-        }
-        else if(pos.x < -x_limit){
-            pos.x = -x_limit;
-        }
+        
+        pos.x = Mathf.Clamp(pos.x, -x_limit, x_limit);
         transform.position = pos;
     }
 

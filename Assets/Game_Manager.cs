@@ -14,9 +14,13 @@ public class Game_Manager : MonoBehaviour
     [SerializeField]
     GameObject GameOVER_Text;
 
+    [SerializeField]
+    GameObject ShowButton;
+
     Text Point_Text;
     public int Point;
     public int Max_size = 1;
+    bool GameOver = false;
 
 
     // Start is called before the first frame update
@@ -25,6 +29,7 @@ public class Game_Manager : MonoBehaviour
         Point = 0;
         Point_Text = Point_Text_obj.GetComponent<Text>();
         GameOVER_Text.SetActive(false);
+        ShowButton.SetActive(false);
         Time.timeScale = 1;
     }
 
@@ -41,12 +46,31 @@ public class Game_Manager : MonoBehaviour
 
     public void Game_Over()
     {
-        GameOVER_Text.SetActive(true);
-        Time.timeScale = 0;
+        if (!GameOver)
+        {
+            GameOVER_Text.SetActive(true);
+            Time.timeScale = 0;
+            GameOver = true;
+        }
+        
     }
 
-    void ReLodeScene()
+    public void ReLodeScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+    public void Show()
+    {
+        GameOVER_Text.SetActive(true);
+        ShowButton.SetActive(false);
+    }
+
+
+    public void Hide()
+    {
+        GameOVER_Text.SetActive(false);
+        ShowButton.SetActive(true);
     }
 }

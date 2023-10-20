@@ -76,7 +76,12 @@ public class player_move : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0))
         {
-            Doropping();
+            if(timer * Time.timeScale > Cool_down)
+            {
+                Doropping();
+                timer = 0;
+            }
+            
         }
     }
 
